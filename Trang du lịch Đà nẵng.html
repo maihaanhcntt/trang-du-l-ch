@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trang Dịch vụ Đà Nẵng</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #cce6ff;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #65C0F8;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    header img {
+      height: 80px;
+      position: absolute;
+      left: 30px;
+    }
+
+    header h1 {
+      margin-left: 60px;
+      text-align: center;
+      flex-grow: 1;
+    }
+
+    nav {
+      background-color: #8CCAF1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 40px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links {
+      display: flex;
+      justify-content: space-around;
+      flex: 1;
+    }
+
+    .nav-links a {
+      color: black;
+      text-decoration: none;
+      padding: 10px 20px;
+      font-size: 22px;
+      border-radius: 5px;
+      transition: all 0.3s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background-color: #E8DE23;
+      border-radius: 5px;
+      color: #333;
+    }
+
+    .search-container {
+      position: relative;
+    }
+
+    .search-box {
+      width: 200px;
+      height: 35px;
+      font-size: 20px;
+      padding: 5px 15px;
+      border-radius: 20px;
+      border: 1px solid white;
+      transition: width 0.3s ease-in-out;
+    }
+
+    .search-box:focus {
+      width: 300px;
+    }
+
+    .suggestions {
+      position: absolute;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      top: 40px;
+      left: 0;
+      width: 100%;
+      display: none;
+      z-index: 1000;
+    }
+
+    .suggestions div {
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .suggestions div:hover {
+      background-color: #f0f0f0;
+    }
+
+    .container {
+      padding: 20px 50px;
+    }
+
+    h3 {
+      color: white;
+      margin-bottom: 5px;
+    }
+
+    .section {
+      background-color: #b3ddff;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .tour {
+      background-color: #8CCAF1;
+      border-radius: 10px;
+      padding: 15px 20px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+
+    footer {
+            background: linear-gradient(to right, #AFE3FB, #2470A6);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        .food-item {
+    position: relative;
+    justify-content: space-between;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.6);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 700px;
+      position: relative;
+      animation: slideDown 0.3s ease;
+    }
+
+    @keyframes slideDown {
+      from { top: -100px; opacity: 0; }
+      to { top: 0; opacity: 1; }
+    }
+
+    .close {
+      color: #aaa;
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: red;
+    }
+
+    .modal img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .vehicle-options {
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="tròn-01.png" alt="Logo nhóm">
+    <h1>Trang Dịch vụ Đà Nẵng</h1>
+  </header>
+  <nav>
+    <div class="nav-links">
+      <a href="#" class="nav-item">Trang Chủ</a>
+      <a href="#" class="nav-item">Điểm Đến</a>
+      <a href="#" class="nav-item">Ẩm Thực</a>
+      <a href="#" class="nav-item">Dịch Vụ</a>
+      <a href="#" class="nav-item">Đặt phòng</a>
+    </div>
+    <div class="search-container">
+      <input type="text" class="search-box" id="searchInput" placeholder="Tìm kiếm...">
+      <div class="suggestions" id="suggestionsBox">
+        <div onclick="selectSuggestion('Danh sách tour')">Danh sách tour</div>
+        <div onclick="selectSuggestion('Dịch vụ thuê xe')">Dịch vụ thuê xe</div>
+        <div onclick="selectSuggestion('Chia sẻ kinh nghiệm')">Chia sẻ kinh nghiệm</div>
+      </div>
+    </div>
+  <a href="#" class="button" style="margin-left: 10px; background-color: #E8DE23; color: white; padding: 8px 15px; text-decoration: none; border-radius: 5px; font-size: 18px;">Đăng Nhập</a>
+  <a href="#" class="button" style="margin-left: 10px; background-color: #E8DE23; color: white; padding: 8px 15px; text-decoration: none; border-radius: 5px; font-size: 18px;">Đăng Ký</a>
+</div>
+  </nav>
+
+  <div class="container">
+    <div class="section">
+      <h3>Danh sách tour</h3>
+      <div class="tour">
+        <h4><b>Tour Bà Nà Hills</b></h4>
+        <p>Lịch trình: Đón khách - Cáp treo - Cầu Vàng - Vườn hoa - Ăn trưa - Trở về</p>
+        <p>Chi phí: 1.500.000 VNĐ/ người</p>
+        <p>Phương thức đặt chỗ: <a href="#" class="book-btn" data-tour="bana">Đặt chỗ ngay</a></p>
+      </div>
+      <div class="tour">
+        <h4><b>Tour Ngũ Hành Sơn</b></h4>
+        <p>Lịch trình: Tham quan các ngọn núi - Chùa Linh Ứng - Làng đá mỹ nghệ Non Nước</p>
+        <p>Chi phí: 700.000 VNĐ/ người</p>
+        <p>Phương thức đặt chỗ: <a href="#" class="book-btn" data-tour="ngu-hanh-son">Đặt chỗ ngay</a></p>
+      </div>
+      <div class="tour">
+        <h4><b>Tour Cù Lao Chàm</b></h4>
+        <p>Lịch trình: Di chuyển bằng cano - Tắm biển - Lặn ngắm san hô - Ăn trưa - Tham quan làng chài</p>
+        <p>Chi phí: 900.000 VNĐ/ người</p>
+        <p>Phương thức đặt chỗ: <a href="#" class="book-btn" data-tour="cu-lao-cham">Đặt chỗ ngay</a></p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Dịch vụ thuê xe</h3>
+      <ul>
+        <li>Xe máy: 150.000 VNĐ/ngày</li>
+        <li>Ô tô: 1.000.000 VNĐ/ngày</li>
+        <li>Xe đạp: 50.000 VNĐ/ngày</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h3>Chia sẻ kinh nghiệm</h3>
+      <button onclick="showExperience()">Xem thêm</button>
+      <div id="experienceContent" style="display:none; margin-top:15px">
+        <img src="https://duan-sungroup.com/wp-content/uploads/2022/10/hinh-anh-cau-vang-da-nang-nhu-dai-lua-giua-nui-rung.jpg" alt="Ảnh du khách" style="width:100%; max-width:500px; border-radius:10px;">
+        <p><i>"Chuyến đi đến Đà Nẵng thật tuyệt vời! Tôi rất ấn tượng với Cầu Vàng và những bãi biển tuyệt đẹp nơi đây. Nhất định sẽ quay lại!"</i> - Minh Anh, TP.HCM</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Booking Modal -->
+  <div id="bookingModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <img id="modal-img" src="" alt="">
+      <h2 id="modal-title"></h2>
+      <p id="modal-itinerary"></p>
+      <p id="modal-price"></p>
+      <p><strong>Ngày đặt tour:</strong> <input type="date" required></p>
+      <p><strong>Chọn số lượng:</strong> <input type="number" min="1" value="1"> người</p>
+      <div class="vehicle-options">
+        <p><strong>Chọn phương tiện:</strong></p>
+        <label><input type="radio" name="vehicle" value="xe-may"> Xe máy</label><br>
+        <label><input type="radio" name="vehicle" value="oto"> Ô tô</label><br>
+        <label><input type="radio" name="vehicle" value="xe-dap"> Xe đạp</label>
+      </div>
+      <button style="padding: 10px 20px; background-color: #E8DE23; border: none; border-radius: 8px;">Xác nhận đặt chỗ</button>
+    </div>
+  </div>
+
+  <script>
+    const tourData = {
+      "bana": {
+        title: "Đặt chỗ - Tour Bà Nà Hills",
+        img: "https://duan-sungroup.com/wp-content/uploads/2022/10/thien-nhien-ky-vy-cua-da-nang-tu-goc-nhin-cau-vang.png",
+        itinerary: "Lịch trình: Đón khách - Cáp treo - Cầu Vàng - Vườn hoa - Ăn trưa - Trở về",
+        price: "Chi phí: 1.500.000 VNĐ/người"
+      },
+      "ngu-hanh-son": {
+        title: "Đặt chỗ - Tour Ngũ Hành Sơn",
+        img: "https://duan-sungroup.com/wp-content/uploads/2022/12/to-hop-nghi-duong-co-dia-the-tua-son-huong-thuy-dat-gia-1024x651.png",
+        itinerary: "Lịch trình: Tham quan các ngọn núi - Chùa Linh Ứng - Làng đá mỹ nghệ Non Nước",
+        price: "Chi phí: 700.000 VNĐ/người"
+      },
+      "cu-lao-cham": {
+        title: "Đặt chỗ - Tour Cù Lao Chàm",
+        img: "https://duan-sungroup.com/wp-content/uploads/2022/12/intercontinental-da-nang-sun-peninsula-resort-la-du-an-nghi-duong-dang-cap-quoc-te-1536x1025.png",
+        itinerary: "Lịch trình: Di chuyển bằng cano - Tắm biển - Lặn ngắm san hô - Ăn trưa - Tham quan làng chài",
+        price: "Chi phí: 900.000 VNĐ/người"
+      }
+    };
+
+    document.querySelectorAll('.book-btn').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const tour = this.dataset.tour;
+        const data = tourData[tour];
+        document.getElementById('modal-title').innerText = data.title;
+        document.getElementById('modal-img').src = data.img;
+        document.getElementById('modal-itinerary').innerText = data.itinerary;
+        document.getElementById('modal-price').innerText = data.price;
+        document.getElementById('bookingModal').style.display = 'block';
+      });
+    });
+
+    function closeModal() {
+      document.getElementById('bookingModal').style.display = 'none';
+    }
+
+    function showExperience() {
+      document.getElementById("experienceContent").style.display = "block";
+    }
+
+    // Tìm kiếm và gợi ý
+    const searchInput = document.getElementById("searchInput");
+    const suggestionsBox = document.getElementById("suggestionsBox");
+
+    searchInput.addEventListener("focus", () => suggestionsBox.style.display = "block");
+    searchInput.addEventListener("blur", () => setTimeout(() => suggestionsBox.style.display = "none", 200));
+
+    function selectSuggestion(keyword) {
+      searchInput.value = keyword;
+      scrollToAndMoveSection(keyword);
+    }
+
+    function scrollToAndMoveSection(keyword) {
+      const container = document.querySelector(".container");
+      const sections = container.querySelectorAll(".section");
+      for (let section of sections) {
+        const heading = section.querySelector("h3");
+        if (heading && heading.textContent.toLowerCase().includes(keyword.toLowerCase())) {
+          container.insertBefore(section, container.firstChild);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          break;
+        }
+      }
+    }
+  </script>
+ <footer>
+  <div class="contact-info">
+          <h2>Liên Hệ</h2>
+          <p>Địa chỉ: Số 128, Đường Nguyễn Trãi, Đà Nẵng.</p>
+          <p>Email: DaNangTravel12@gmail.com</p>
+          <p>SĐT: 0375124568</p>
+          <p>Hotline: 19001001910</p>
+          <p>Website: https://DaNangTravel12</p>
+      </div>
